@@ -1,6 +1,6 @@
 install.packages("RODBC")
 library(RODBC)
-dbhandle <- odbcDriverConnect('driver={SQL Server};server=LT-AS5.lister.lan;database=VC_POC;trusted_connection=true')
+dbhandle <- odbcDriverConnect('driver={SQL Server};server= .lan;database=VC_POC;trusted_connection=true')
 
 
 install.package
@@ -15,7 +15,7 @@ SQL SERVER CONNECTION
 require(RJDBC)
 drv <- JDBC("com.microsoft.sqlserver.jdbc.SQLServerDriver",
             "/home/arunraja/Documents/sqljdbc4.jar") 
-conn <- dbConnect(drv, "jdbc:sqlserver://LT-AS5.lister.lan", "lister", "lister_123")
+conn <- dbConnect(drv, "jdbc:sqlserver:// .lan", "lis", "li_123")
 #then build a query and run it
 args(dbConnect)
 showMethods("dbConnect") 
@@ -35,12 +35,12 @@ MONGO DB CONNECTION
 ######################################################
 
 library("rmongodb")
-mongo <- mongo.create(host = "LT-AS5.lister.lan", name = "", username = "",
+mongo <- mongo.create(host = " ", name = "", username = "",
                       password = "", db = "test", timeout = 0L)
 
 if (mongo.is.connected(mongo)) {
   buf <- mongo.bson.buffer.create()
-  mongo.bson.buffer.append(buf, "name", "Joe")
+  mongo.bson.buffer.append(buf, "name", "Ram")
   mongo.bson.buffer.append(buf, "age", 22L)
   b <- mongo.bson.from.buffer(buf)
   mongo.insert(mongo, "test.people", b)
