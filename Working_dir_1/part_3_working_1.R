@@ -71,3 +71,75 @@ tables()
 DT[,list(y)]
 DT[,table(y)]
 ?data.table
+
+gas <- read.xlsx("../R_and_DS/data/gas.xlsx", sheetIndex=1, header=T)
+list.files("/home/hduser/R_and_DS/data")
+getwd()
+setwd("/home/hduser/R_and_DS")
+head(gas)
+dat <- read.xlsx("../R_and_DS/data/gas.xlsx", sheetIndex=1, header=T,rowIndex=18:23,colIndex=7:15)
+dat
+sum(dat$Zip*dat$Ext,na.rm=T) 
+
+library(XML)
+
+fileURL <- "http://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+doc <- htmlTreeParse(fileURL, useInternal=T)
+rootNode <- xmlRoot(doc)
+xmlName(rootNode)
+names(rootNode)
+rootNode[[1]]
+rootNode[[3]][[3]]
+doc[[1]]
+xmlSApply(rootNode,xmlValue)
+zipv <-xpathSApply(rootNode,"//zipcode",xmlValue)
+sum(zipv==21231)
+
+
+
+library(data.table)
+fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06pid.csv "
+download.file(fileURL,destfile="/home/hduser/R_and_DS/data/ASurvry.csv",method="curl")
+fpath <- read.csv("/home/hduser/R_and_DS/data/ASurvry.csv", header =T)
+NDT <- data.table(fpath)
+
+DT<-fread("/home/hduser/R_and_DS/data/ASurvry.csv")
+?fread
+
+
+install.packages("RMySQL")
+library("RMySQL")
+library(RODBC)
+m <-dbDriver("RODBC")
+
+mylocal <- dbConnect(MySQL(),user="root", password="hduser")
+result <- dbGetQuery(mylocal,"show databases;");
+result
+dbDisconnect(mylocal)
+
+
+ucscDB <- dbConnect(MySQL(), user="genome", host="genome-mysql.cse.ucsc.edu")
+result <- dbGetQuery(ucscDB,"Show databases;")
+result
+
+hg19 <- dbConnect(MySQL(), user="genome",db="hg19", host="genome-mysql.cse.ucsc.edu")
+allTables <- dbListTables(hg19)
+length(allTables)
+allTables [1:5]
+dbListFields(hg19,"HInv")
+dbGetQuery(hg19,"select count(*) from HInv")
+dbGetQuery(hg19,"select * from HInv limit 10;")
+readHInv <- dbReadTable(hg19,"HInv")
+head(readHInv)
+
+
+
+query <- dbSendQuery(hg19,"select * from affyU133Plus2 where misMatches between 1 and 3")
+affMis <- fetch(query);quantile(affMis$misMatches)
+?quantile
+head(affMis)
+
+affMisSmall <- fetch(query,n=15)
+dim(affMisSmall)
+dbClearResult(query)
+dbDisconnect(hg19)
