@@ -143,3 +143,21 @@ affMisSmall <- fetch(query,n=15)
 dim(affMisSmall)
 dbClearResult(query)
 dbDisconnect(hg19)
+
+
+conn= url("http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en")
+htmlcode = readLines(conn)
+close(conn)
+htmlcode
+
+url <- "http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en"
+
+library(httr);
+html2 = GET(url)
+content2 = content(html2,as="text")
+parsedHtml = htmlParse(content2,asText=T)
+xpathSApply(parsedHtml,"//title",xmlValue)
+
+url <- "https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=https://mail.google.com/mail/&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1"
+ppg = GET(url)
+names(ppg)
